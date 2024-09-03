@@ -110,7 +110,7 @@ const NewUser = () => {
           }
         );
         setNewUserData(resposne.data);
-        console.log("setnewuserdata", resposne.data);
+        // console.log("setnewuserdata", resposne.data);
       } catch (error) {
         console.error("Error fetching newUserData", error);
       } finally {
@@ -121,7 +121,7 @@ const NewUser = () => {
     setLoading(false);
   }, []);
 
-  console.log("newuserdata", newUserData);
+  // console.log("newuserdata", newUserData);
 
   return (
     <Layout>

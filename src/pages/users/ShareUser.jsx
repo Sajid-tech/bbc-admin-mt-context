@@ -5,6 +5,7 @@ import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import Layout from "../../layout/Layout";
 import MUIDataTable from "mui-datatables";
+import { CiEdit } from "react-icons/ci";
 
 const ShareUser = () => {
   const [shareData, setShareData] = useState(null);
@@ -41,11 +42,18 @@ const ShareUser = () => {
       },
     },
     {
-      name: "action",
+      name: "share_from_id",
       label: "Action",
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (userId) => {
+          return (
+            <div>
+              <CiEdit className="h-5 w-5 cursor-pointer" />
+            </div>
+          );
+        },
       },
     },
   ];
