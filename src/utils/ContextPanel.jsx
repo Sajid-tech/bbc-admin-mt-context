@@ -39,6 +39,16 @@ const AppProvider = ({ children }) => {
         if (
           currentPath === "/home" ||
           currentPath === "/profile" ||
+          currentPath === "/user-profile" ||
+          currentPath === "/about" ||
+          currentPath === "/portfolio" ||
+          currentPath === "/enquiry" ||
+          currentPath === "/new-user" ||
+          currentPath === "/active-user" ||
+          currentPath === "/inactive-user" ||
+          currentPath === "/mobile-user" ||
+          currentPath === "/share-user" ||
+          currentPath === "/download" ||
           currentPath === "/change-password"
         ) {
           navigate(currentPath);

@@ -99,7 +99,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           </li>
 
           <li>
-            <NavLink to="/table">
+            <NavLink to="/user-profile">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
@@ -112,14 +112,14 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                     color="inherit"
                     className="font-medium capitalize"
                   >
-                    Table
+                    Profile
                   </Typography>
                 </Button>
               )}
             </NavLink>
           </li>
           <li>
-            <NavLink to="/form">
+            <NavLink to="/about">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
@@ -132,7 +132,167 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                     color="inherit"
                     className="font-medium capitalize"
                   >
-                    Form
+                    About Us
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/portfolio">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Portfolio
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/enquiry">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Enquiry
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/new-user">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    New User
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/active-user">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Active User
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/inactive-user">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Inactive User
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/mobile-user">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Mobile User
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/share-user">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Share User
+                  </Typography>
+                </Button>
+              )}
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/download">
+              {({ isActive }) => (
+                <Button
+                  variant={isActive ? "gradient" : "text"}
+                  color="white"
+                  className="flex items-center gap-4 px-4 capitalize"
+                  fullWidth
+                >
+                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Download
                   </Typography>
                 </Button>
               )}

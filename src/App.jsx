@@ -7,6 +7,16 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ForgetPassword from "./pages/auth/ForgetPassword";
 import Profile from "./pages/profile/Profile";
 import ChangePassword from "./pages/profile/ChangePassword";
+import UserProfile from "./pages/dashboard/UserProfile";
+import About from "./pages/website/About";
+import Enquiry from "./pages/website/Enquiry";
+import NewUser from "./pages/users/NewUser";
+import ActiveUser from "./pages/users/ActiveUser";
+import InactiveUser from "./pages/users/InactiveUser";
+import MobileUser from "./pages/users/MobileUser";
+import ShareUser from "./pages/users/ShareUser";
+import Download from "./pages/users/Download";
+import Portfolio from "./pages/website/Portfolio";
 
 const App = () => {
   return (
@@ -20,6 +30,43 @@ const App = () => {
         <Route
           path="/profile"
           element={<ProtectedRoute element={<Profile />} />}
+        />
+        <Route
+          path="/user-profile"
+          element={<ProtectedRoute element={<UserProfile />} />}
+        />
+        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
+        <Route
+          path="/portfolio"
+          element={<ProtectedRoute element={<Portfolio />} />}
+        />
+        <Route
+          path="/enquiry"
+          element={<ProtectedRoute element={<Enquiry />} />}
+        />
+        <Route
+          path="/new-user"
+          element={<ProtectedRoute element={<NewUser />} />}
+        />
+        <Route
+          path="/active-user"
+          element={<ProtectedRoute element={<ActiveUser />} />}
+        />
+        <Route
+          path="/inactive-user"
+          element={<ProtectedRoute element={<InactiveUser />} />}
+        />
+        <Route
+          path="/mobile-user"
+          element={<ProtectedRoute element={<MobileUser />} />}
+        />
+        <Route
+          path="/share-user"
+          element={<ProtectedRoute element={<ShareUser />} />}
+        />
+        <Route
+          path="/download"
+          element={<ProtectedRoute element={<Download />} />}
         />
         <Route
           path="/change-password"

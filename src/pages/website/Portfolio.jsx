@@ -5,7 +5,7 @@ import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 
 const Portfolio = () => {
-  const [sliderImages, setSliderImages] = useState([]);
+  const [sliderImages, setSliderImages] = useState({});
 
   useEffect(() => {
     const fetchSliderImages = async () => {
@@ -16,9 +16,7 @@ const Portfolio = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // Assuming response.data.slider is an object with keys for images
-        const images = Object.values(response.data.slider).filter(Boolean); // Filter out any empty values
-        setSliderImages(images);
+        setSliderImages(response.data.slider);
       } catch (error) {
         console.error("Error fetching slider images", error);
       }
@@ -31,26 +29,29 @@ const Portfolio = () => {
     // Handle file change here
   };
 
+  // Convert object to array of [key, value] pairs, then slice to exclude the first item
+  const imagesArray = Object.entries(sliderImages).slice(1);
+
   return (
     <Layout>
       <div className="container mx-auto mt-10">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <form id="addIndiv">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {sliderImages.map((image, index) => (
+              {imagesArray.map(([key, item], index) => (
                 <div key={index} className="flex flex-col items-center">
                   <label className="block text-gray-700 mb-2">
-                    Portfolio {index + 1}
+                    Portfolio {index + 1} {/* Adjusted to start from 2 */}
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileChange(e, index + 1)}
-                      className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                      onChange={(e) => handleFileChange(e, index + 2)}
+                      className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 p-2 rounded-lg hover:border-blue-200 cursor-pointer bg-gray-50"
                     />
                   </label>
                   <img
-                    src={`https://businessboosters.club/public/images/product_images/${image}`}
-                    alt={`Portfolio ${index + 1}`}
+                    src={`https://businessboosters.club/public/images/product_images/${item}`}
+                    alt={`Portfolio ${index}`}
                     className="w-full h-48 sm:h-56 md:h-72 md:w-72 lg:h-72 rounded-lg shadow-md object-cover mt-4"
                   />
                 </div>
@@ -60,12 +61,14 @@ const Portfolio = () => {
             <div className="mt-6 flex space-x-4 justify-center">
               <button
                 type="submit"
+                disabled
                 className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition"
               >
                 Update
               </button>
-              <Link to="/home">
+              <Link to="#">
                 <button
+                  disabled
                   type="button"
                   className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition"
                 >

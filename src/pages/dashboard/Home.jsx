@@ -27,7 +27,7 @@ const Home = () => {
           },
         });
         setDashboardData(resposne.data);
-      } catch {
+      } catch (error) {
         console.error("Error fetching dashboard data", error);
       } finally {
         setLoading(false);
@@ -60,7 +60,7 @@ const Home = () => {
                 </h3>
               </Link>
 
-              <p className="mt-2 line-clamp-5 lg:line-clamp-6 text-sm/relaxed text-gray-700">
+              <p className="flex  justify-center p-6  text-4xl font-bold text-red-700">
                 {dashboardData?.total_active}
               </p>
             </div>
@@ -86,7 +86,7 @@ const Home = () => {
                 </h3>
               </Link>
 
-              <p className="mt-2 line-clamp-5 lg:line-clamp-6 text-sm/relaxed text-gray-700">
+              <p className=" flex  justify-center p-6  text-4xl font-bold text-red-700">
                 {dashboardData?.total_inactive}
               </p>
             </div>
