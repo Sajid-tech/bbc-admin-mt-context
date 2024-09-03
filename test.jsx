@@ -1,83 +1,17 @@
-import React, { useState, useEffect } from "react";
-import Layout from "../../layout/Layout";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import BASE_URL from "../../base/BaseUrl";
-
-const Portfolio = () => {
-  const [sliderImages, setSliderImages] = useState([]);
-
-  useEffect(() => {
-    const fetchSliderImages = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(`${BASE_URL}/api/panel-fetch-slider`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        // Assuming response.data.slider is an object with keys for images
-        const images = Object.values(response.data.slider).filter(Boolean); // Filter out any empty values
-        setSliderImages(images);
-      } catch (error) {
-        console.error("Error fetching slider images", error);
-      }
-    };
-
-    fetchSliderImages();
-  }, []);
-
-  const handleFileChange = (e, index) => {
-    // Handle file change here
-  };
-
-  return (
-    <Layout>
-      <div className="container mx-auto mt-10">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <form id="addIndiv">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {sliderImages.map((image, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <label className="block text-gray-700 mb-2">
-                    Portfolio {index + 1}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleFileChange(e, index + 1)}
-                      className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                    />
-                  </label>
-                  <img
-                    src={`https://businessboosters.club/public/images/product_images/${image}`}
-                    alt={`Portfolio ${index + 1}`}
-                    className="w-full h-48 sm:h-56 md:h-72 md:w-72 lg:h-72 rounded-lg shadow-md object-cover mt-4"
-                  />
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 flex space-x-4 justify-center">
-              <button
-                type="submit"
-                className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition"
-              >
-                Update
-              </button>
-              <Link to="/home">
-                <button
-                  type="button"
-                  className="bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition"
-                >
-                  Cancel
-                </button>
-              </Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </Layout>
-  );
-};
-
-export default Portfolio;
+// "dependencies": {
+//   "@emotion/react": "^11.13.3",
+//   "@emotion/styled": "^11.13.0",
+//   "@heroicons/react": "2.0.18",
+//   "@material-tailwind/react": "^2.1.9",
+//   "@mui/icons-material": "^5.16.7",
+//   "@mui/material": "^6.0.1",
+//   "apexcharts": "3.44.0",
+//   "axios": "^1.7.5",
+//   "mui-datatables": "^4.3.0",
+//   "react": "^18.3.1",
+//   "react-apexcharts": "1.4.1",
+//   "react-dom": "^18.3.1",
+//   "react-hot-toast": "^2.4.1",
+//   "react-icons": "^5.3.0",
+//   "react-router-dom": "6.17.0"
+// }
