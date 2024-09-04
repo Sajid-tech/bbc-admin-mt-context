@@ -1,11 +1,21 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
+  ArrowDownTrayIcon,
+  BriefcaseIcon,
+  ChatBubbleLeftIcon,
+  DevicePhoneMobileIcon,
   HomeIcon,
-  TableCellsIcon,
+  InformationCircleIcon,
+  ShareIcon,
+  UserCircleIcon,
+  UserIcon,
+  UserMinusIcon,
+  UserPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { useEffect, useRef } from "react";
+
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
   const { pathname } = useLocation();
@@ -38,7 +48,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   useEffect(() => {
     setOpenSideNav(false);
   }, [pathname, setOpenSideNav]);
-
+  //sajid
   return (
     <aside
       ref={sidenavRef}
@@ -46,22 +56,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         openSideNav ? "translate-x-0" : "-translate-x-80"
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
-      <div className={`relative`}>
+      <div className={`relative bg-blue-50 rounded-xl`}>
         <Link to="/home" className="flex items-center justify-center p-4">
           <div className="flex items-center">
-            <img
-              src="https://www.ag-solutions.in/assets/images/logo.png"
-              alt="Logo"
-              className="h-12 w-auto"
-            />
-            <div className="ml-3 logo-text">
-              <div className="logo-title text-white text-lg font-bold">
-                <span className="font-black">AG</span> Solution
-              </div>
-              <div className="logo-sub-title text-gray-400 text-sm">
-                Single Click Solution
-              </div>
-            </div>
+            <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
           </div>
         </Link>
         <IconButton
@@ -76,14 +74,15 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         </IconButton>
       </div>
       <div className="m-4">
-        <ul className="mb-4 flex flex-col gap-1">
+        <ul className="mb-4 flex flex-col  gap-[6px]">
+          {/* dashboard */}
           <li>
             <NavLink to="/home">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
                   <HomeIcon className="w-5 h-5 text-inherit" />
@@ -104,10 +103,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <UserCircleIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -118,16 +117,17 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
               )}
             </NavLink>
           </li>
+          {/* website  */}
           <li>
             <NavLink to="/about">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <InformationCircleIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -144,10 +144,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <BriefcaseIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -164,10 +164,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <ChatBubbleLeftIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -178,16 +178,17 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
               )}
             </NavLink>
           </li>
+          {/* Admin  */}
           <li>
             <NavLink to="/new-user">
               {({ isActive }) => (
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <UserPlusIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -204,10 +205,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <UserIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -224,10 +225,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <UserMinusIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -244,10 +245,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <DevicePhoneMobileIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -264,10 +265,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <ShareIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"
@@ -284,10 +285,11 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
                 <Button
                   variant={isActive ? "gradient" : "text"}
                   color="white"
-                  className="flex items-center gap-4 px-4 capitalize"
+                  // className="flex items-center gap-4 px-4 capitalize"
+                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
                   fullWidth
                 >
-                  <TableCellsIcon className="w-5 h-5 text-inherit" />
+                  <ArrowDownTrayIcon className="w-5 h-5 text-inherit" />
                   <Typography
                     color="inherit"
                     className="font-medium capitalize"

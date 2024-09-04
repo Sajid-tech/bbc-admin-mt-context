@@ -72,6 +72,8 @@ const MobileUser = () => {
     rowsPerPageOptions: [5, 10, 25],
     responsive: "standard",
     viewColumns: false,
+    download: false,
+    print: false,
   };
 
   useEffect(() => {

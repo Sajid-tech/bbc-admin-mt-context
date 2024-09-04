@@ -1,234 +1,339 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../../base/BaseUrl";
+import { ContextPanel } from "../../utils/ContextPanel";
+import Layout from "../../layout/Layout";
 import {
+  Input,
+  Button,
   Card,
-  CardHeader,
   CardBody,
-  Typography,
-  Tabs,
-  TabsHeader,
-  TabsBody,
-  Tab,
-  TabPanel,
+  CardFooter,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 import {
-  UserIcon,
+  UserCircleIcon,
+  CameraIcon,
   BriefcaseIcon,
-  EnvelopeIcon,
-  PhoneIcon,
-  MapPinIcon,
-  CalendarIcon,
   GlobeAltIcon,
-} from "@heroicons/react/24/outline";
+  PhoneIcon,
+} from "@heroicons/react/24/solid";
+import { FaWhatsapp } from "react-icons/fa";
 
-const BASE_URL = "your-base-url-here"; // Replace with your actual base URL
+const genderOptions = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "other", label: "Other" },
+];
 
-const EnhancedUserProfile = () => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const location = useLocation();
-  const userId = new URLSearchParams(location.search).get("id");
+export default function UserProfile() {
+  const [userProfileData, setUserProfileData] = useState({
+    name: "",
+    gender: "",
+    dob: "",
+    image: null,
+    email: "",
+    mobile: "",
+    whatsapp_number: "",
+    spouse_name: "",
+    doa: "",
+    company: "",
+    company_short: "",
+    category: "",
+    website: "",
+    experience: "",
+    landline: "",
+    area: "",
+    address: "",
+    product: "",
+    profile_tag: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const { isPanelUp } = useContext(ContextPanel);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchUserProfile = async () => {
       try {
+        if (!isPanelUp) {
+          navigate("/maintenance");
+          return;
+        }
         setLoading(true);
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${BASE_URL}/api/panel-fetch-profile-by-id/${userId}`,
+          `${BASE_URL}/api/panel-fetch-profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        setUserData(response.data.new_user);
+        setUserProfileData(response.data.profile);
       } catch (error) {
-        console.error("Error fetching user data", error);
+        console.error("Error fetching profile data", error);
       } finally {
         setLoading(false);
       }
     };
+    fetchUserProfile();
+  }, [isPanelUp, navigate]);
 
-    if (userId) {
-      fetchUserData();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserProfileData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      await axios.post(
+        `${BASE_URL}/api/panel-update-profile`,
+        userProfileData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Handle successful update (e.g., show a success message)
+    } catch (error) {
+      console.error("Error updating profile", error);
+      // Handle error (e.g., show an error message)
+    } finally {
+      setLoading(false);
     }
-  }, [userId]);
-
-  const ProfileSection = ({ icon: Icon, title, value }) => (
-    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 mb-4">
-      <div className="flex items-center space-x-2">
-        <Icon className="w-5 h-5 text-blue-500" />
-        <Typography variant="h6" color="blue-gray" className="font-medium">
-          {title}:
-        </Typography>
-      </div>
-      <Typography className="text-gray-700">{value || "N/A"}</Typography>
-    </div>
-  );
-
-  const LoadingSkeleton = () => (
-    <div className="animate-pulse space-y-2">
-      <div className="h-4 bg-slate-200 rounded w-3/4 mx-auto"></div>
-      <div className="h-3 bg-slate-200 rounded w-1/2 mx-auto"></div>
-    </div>
-  );
+  };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6">
-      <Card className="w-full">
-        <CardHeader
-          floated={false}
-          className="h-60 sm:h-80 md:h-96 m-0 relative overflow-hidden"
-        >
-          <div
-            className="absolute inset-0 bg-center bg-cover bg-no-repeat"
-            style={{
-              backgroundImage: `url(${
-                userData?.image
-                  ? `https://businessboosters.club/public/images/user_images/${userData.image}`
-                  : "/placeholder-avatar.png"
-              })`,
-            }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80"></div>
-          </div>
-          <div className="absolute inset-0 flex flex-col justify-end sm:justify-center items-center text-white p-4">
-            {loading ? (
-              <LoadingSkeleton />
-            ) : (
-              <>
-                <Typography
-                  variant="h3"
-                  className="mb-2 text-center text-shadow"
-                >
-                  {userData?.name}
-                </Typography>
-                <Typography variant="h6" className="text-center text-shadow">
-                  {userData?.company}
-                </Typography>
-              </>
-            )}
-          </div>
-        </CardHeader>
-        <CardBody>
-          <Tabs value="personal" className="w-full">
-            <TabsHeader className="w-full overflow-x-auto flex-nowrap">
-              <Tab value="personal" className="w-full sm:w-auto">
-                Personal Info
-              </Tab>
-              <Tab value="business" className="w-full sm:w-auto">
-                Business Info
-              </Tab>
-              <Tab value="contact" className="w-full sm:w-auto">
-                Contact Info
-              </Tab>
-            </TabsHeader>
-            <TabsBody>
-              <TabPanel value="personal">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ProfileSection
-                    icon={UserIcon}
-                    title="Full Name"
-                    value={userData?.name}
-                  />
-                  <ProfileSection
-                    icon={UserIcon}
-                    title="Gender"
-                    value={userData?.gender}
-                  />
-                  <ProfileSection
-                    icon={CalendarIcon}
-                    title="Date of Birth"
-                    value={userData?.dob}
-                  />
-                  <ProfileSection
-                    icon={UserIcon}
-                    title="Spouse Name"
-                    value={userData?.spouse_name}
-                  />
-                  <ProfileSection
-                    icon={CalendarIcon}
-                    title="Anniversary"
-                    value={userData?.anniversary}
-                  />
+    <Layout>
+      <div className="flex min-h-screen bg-gray-100">
+        <Card className="w-full mx-auto shadow-lg rounded-lg">
+          <CardBody className="p-6">
+            <div className="max-w-full mx-auto">
+              <div>
+                <h1 className="text-2xl font-semibold mb-6">User Profile</h1>
+              </div>
+              <form onSubmit={handleSubmit} id="addIndiv" autoComplete="off">
+                <div className="flex justify-center mb-6">
+                  <div className="relative">
+                    {userProfileData.image ? (
+                      <img
+                        src={userProfileData.image}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full"
+                      />
+                    ) : (
+                      <UserCircleIcon className="w-32 h-32 text-gray-300" />
+                    )}
+                    <label
+                      htmlFor="image-upload"
+                      className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer"
+                    >
+                      <CameraIcon className="w-6 h-6 text-white" />
+                    </label>
+                    <input
+                      id="image-upload"
+                      name="image"
+                      type="file"
+                      className="hidden"
+                      onChange={(e) =>
+                        setUserProfileData((prevData) => ({
+                          ...prevData,
+                          image: e.target.files[0],
+                        }))
+                      }
+                    />
+                  </div>
                 </div>
-              </TabPanel>
-              <TabPanel value="business">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ProfileSection
-                    icon={BriefcaseIcon}
-                    title="Company"
-                    value={userData?.company}
-                  />
-                  <ProfileSection
-                    icon={BriefcaseIcon}
-                    title="Company Short Name"
-                    value={userData?.company_short}
-                  />
-                  <ProfileSection
-                    icon={BriefcaseIcon}
-                    title="Business Category"
-                    value={userData?.category}
-                  />
-                  <ProfileSection
-                    icon={GlobeAltIcon}
-                    title="Website"
-                    value={userData?.website}
-                  />
-                  <ProfileSection
-                    icon={BriefcaseIcon}
-                    title="Experience"
-                    value={userData?.experience}
-                  />
-                  <ProfileSection
-                    icon={BriefcaseIcon}
-                    title="Products / Services"
-                    value={userData?.product}
-                  />
-                </div>
-              </TabPanel>
-              <TabPanel value="contact">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <ProfileSection
-                    icon={EnvelopeIcon}
-                    title="Email"
-                    value={userData?.email}
-                  />
-                  <ProfileSection
-                    icon={PhoneIcon}
-                    title="Mobile"
-                    value={userData?.mobile}
-                  />
-                  <ProfileSection
-                    icon={PhoneIcon}
-                    title="WhatsApp"
-                    value={userData?.whatsapp_number}
-                  />
-                  <ProfileSection
-                    icon={PhoneIcon}
-                    title="Landline"
-                    value={userData?.landline}
-                  />
-                  <ProfileSection
-                    icon={MapPinIcon}
-                    title="Area"
-                    value={userData?.area}
-                  />
-                  <ProfileSection
-                    icon={MapPinIcon}
-                    title="Address"
-                    value={userData?.address}
-                  />
-                </div>
-              </TabPanel>
-            </TabsBody>
-          </Tabs>
-        </CardBody>
-      </Card>
-    </div>
-  );
-};
 
-export default EnhancedUserProfile;
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <Input
+                    name="name"
+                    required
+                    value={userProfileData.name}
+                    onChange={handleInputChange}
+                    label="Full Name"
+                    icon={<UserCircleIcon className="h-5 w-5" />}
+                  />
+                  <Select
+                    name="gender"
+                    required
+                    value={userProfileData.gender}
+                    onChange={(value) =>
+                      setUserProfileData((prevData) => ({
+                        ...prevData,
+                        gender: value,
+                      }))
+                    }
+                    label="Gender"
+                  >
+                    {genderOptions.map((option) => (
+                      <Option key={option.value} value={option.value}>
+                        {option.label}
+                      </Option>
+                    ))}
+                  </Select>
+                  <Input
+                    name="dob"
+                    required
+                    type="date"
+                    value={userProfileData.dob}
+                    onChange={handleInputChange}
+                    label="DOB"
+                  />
+                  <Input
+                    name="email"
+                    required
+                    type="email"
+                    value={userProfileData.email}
+                    onChange={handleInputChange}
+                    label="Email"
+                    icon={<UserCircleIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="mobile"
+                    required
+                    value={userProfileData.mobile}
+                    onChange={handleInputChange}
+                    label="Mobile"
+                    icon={<PhoneIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="whatsapp_number"
+                    required
+                    value={userProfileData.whatsapp_number}
+                    onChange={handleInputChange}
+                    label="WhatsApp"
+                    icon={<FaWhatsapp className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="spouse_name"
+                    value={userProfileData.spouse_name}
+                    onChange={handleInputChange}
+                    label="Spouse Name"
+                    icon={<UserCircleIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="doa"
+                    type="date"
+                    value={userProfileData.doa}
+                    onChange={handleInputChange}
+                    label="Date of Anniversary"
+                  />
+                  <Input
+                    name="company"
+                    required
+                    value={userProfileData.company}
+                    onChange={handleInputChange}
+                    label="Name of the Company"
+                    icon={<BriefcaseIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="company_short"
+                    required
+                    value={userProfileData.company_short}
+                    onChange={handleInputChange}
+                    label="Company Short Name"
+                    icon={<BriefcaseIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="category"
+                    required
+                    value={userProfileData.category}
+                    onChange={handleInputChange}
+                    label="Business Category"
+                    icon={<BriefcaseIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="website"
+                    value={userProfileData.website}
+                    onChange={handleInputChange}
+                    label="Website"
+                    icon={<GlobeAltIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="experience"
+                    value={userProfileData.experience}
+                    onChange={handleInputChange}
+                    label="Experience"
+                    icon={<BriefcaseIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="landline"
+                    value={userProfileData.landline}
+                    onChange={handleInputChange}
+                    label="Landline Number"
+                    icon={<PhoneIcon className="h-5 w-5" />}
+                  />
+                  <Input
+                    name="area"
+                    required
+                    value={userProfileData.area}
+                    onChange={handleInputChange}
+                    label="Area"
+                    icon={<UserCircleIcon className="h-5 w-5" />}
+                  />
+                </div>
+
+                <Input
+                  name="address"
+                  required
+                  value={userProfileData.address}
+                  onChange={handleInputChange}
+                  label="Address"
+                  icon={<UserCircleIcon className="h-5 w-5" />}
+                  className="mt-6"
+                />
+                <Input
+                  name="product"
+                  required
+                  value={userProfileData.product}
+                  onChange={handleInputChange}
+                  label="Products / Services"
+                  icon={<BriefcaseIcon className="h-5 w-5" />}
+                  className="mt-6"
+                />
+                <Input
+                  name="profile_tag"
+                  required
+                  value={userProfileData.profile_tag}
+                  onChange={handleInputChange}
+                  label="Profile Tag"
+                  icon={<UserCircleIcon className="h-5 w-5" />}
+                  className="mt-6"
+                />
+
+                <CardFooter className="mt-6 flex justify-between">
+                  <Button
+                    type="submit"
+                    color="light-blue"
+                    className="w-full md:w-auto"
+                    disabled={loading}
+                  >
+                    {loading ? "Updating..." : "Update Profile"}
+                  </Button>
+                  <Button
+                    type="button"
+                    color="red"
+                    className="w-full md:w-auto"
+                    onClick={() => setUserProfileData({})}
+                  >
+                    Reset
+                  </Button>
+                </CardFooter>
+              </form>
+            </div>
+          </CardBody>
+        </Card>
+      </div>
+    </Layout>
+  );
+}

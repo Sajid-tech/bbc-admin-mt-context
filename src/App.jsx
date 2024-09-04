@@ -5,7 +5,6 @@ import SIgnUp from "./pages/auth/SIgnUp";
 import Maintenance from "./pages/maintenance/Maintenance";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgetPassword from "./pages/auth/ForgetPassword";
-import Profile from "./pages/profile/Profile";
 import ChangePassword from "./pages/profile/ChangePassword";
 import UserProfile from "./pages/dashboard/UserProfile";
 import About from "./pages/website/About";
@@ -29,10 +28,7 @@ const App = () => {
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/maintenance" element={<Maintenance />} />
-        <Route
-          path="/profile"
-          element={<ProtectedRoute element={<Profile />} />}
-        />
+
         <Route
           path="/user-profile"
           element={<ProtectedRoute element={<UserProfile />} />}

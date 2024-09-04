@@ -3,6 +3,7 @@ import Layout from "../../layout/Layout";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
+import { CardHeader, Typography } from "@material-tailwind/react";
 
 const Portfolio = () => {
   const [sliderImages, setSliderImages] = useState({});
@@ -34,7 +35,7 @@ const Portfolio = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto mt-10">
+      <div className="container mx-auto mt-8">
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <form id="addIndiv">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

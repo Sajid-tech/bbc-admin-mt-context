@@ -4,6 +4,8 @@ import Layout from "../../layout/Layout";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
+import { Card, CardBody, Typography } from "@material-tailwind/react";
+import { UserIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 
 const Home = () => {
   // fetching dashboard api
@@ -39,59 +41,40 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="flex lg:flex-row md:flex-row flex-col m-5 p-5 gap-5">
-        <article className="flex  mt-4 bg-blue-100 transition hover:shadow-xl">
-          <div className=" rotate-180 p-2 [writing-mode:_vertical-lr]  bg-green-100 ">
-            <time
-              dateTime="10-10-2022"
-              className="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900"
-            >
-              <span>10-10-2022 </span>
-              <span className="w-px flex-1 bg-gray-900/10"></span>
-              <span className=" text-red-700">Monday</span>
-            </time>
-          </div>
-
-          <div className="flex flex-1  flex-col justify-between">
-            <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
-              <Link href="#">
-                <h3 className="font-bold uppercase text-xl text-gray-900">
-                  Active user
-                </h3>
-              </Link>
-
-              <p className="flex  justify-center p-6  text-4xl font-bold text-red-700">
-                {dashboardData?.total_active}
-              </p>
+      <div className="flex flex-wrap justify-center gap-6 p-6">
+        <Card className="bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-lg rounded-lg w-full md:w-1/3">
+          <CardBody className="flex items-center justify-between p-6">
+            <div className="flex items-center gap-4">
+              <UserIcon className="w-12 h-12 text-blue-500" />{" "}
+              {/* Updated icon */}
+              <div>
+                <Typography variant="h6" color="white" className="uppercase">
+                  Active Users
+                </Typography>
+                <Typography variant="h4" color="white">
+                  {dashboardData?.total_active || 0}
+                </Typography>
+              </div>
             </div>
-          </div>
-        </article>
-        <article className="flex mt-4 bg-blue-100 transition hover:shadow-xl">
-          <div className=" rotate-180 p-2 [writing-mode:_vertical-lr]  bg-green-100 ">
-            <time
-              dateTime="10-10-2022"
-              className="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900"
-            >
-              <span>10-10-2022 </span>
-              <span className="w-px flex-1 bg-gray-900/10"></span>
-              <span className=" text-red-700">Monday</span>
-            </time>
-          </div>
+          </CardBody>
+        </Card>
 
-          <div className="flex flex-1  flex-col justify-between">
-            <div className="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
-              <Link href="#">
-                <h3 className="font-bold uppercase text-xl text-gray-900">
-                  Inactive user
-                </h3>
-              </Link>
-
-              <p className=" flex  justify-center p-6  text-4xl font-bold text-red-700">
-                {dashboardData?.total_inactive}
-              </p>
+        <Card className="bg-gray-900 bg-opacity-90 backdrop-filter backdrop-blur-lg shadow-lg rounded-lg w-full md:w-1/3">
+          <CardBody className="flex items-center justify-between p-6">
+            <div className="flex items-center gap-4">
+              <UserMinusIcon className="w-12 h-12 text-red-500" />{" "}
+              {/* Updated icon */}
+              <div>
+                <Typography variant="h6" color="white" className="uppercase">
+                  Inactive Users
+                </Typography>
+                <Typography variant="h4" color="white">
+                  {dashboardData?.total_inactive || 0}
+                </Typography>
+              </div>
             </div>
-          </div>
-        </article>
+          </CardBody>
+        </Card>
       </div>
     </Layout>
   );

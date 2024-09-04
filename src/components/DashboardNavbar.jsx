@@ -109,7 +109,7 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
             </MenuHandler>
             <MenuList className="bg-gray-700">
               <MenuItem>
-                <Link to="/profile" className="text-black">
+                <Link to="/user-profile" className="text-black">
                   Profile
                 </Link>
               </MenuItem>

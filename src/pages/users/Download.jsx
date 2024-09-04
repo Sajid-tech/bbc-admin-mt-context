@@ -54,22 +54,24 @@ const Download = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto mt-10">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-4">Downloads</h3>
-          <hr className="mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="container mx-auto mt-10 px-4">
+        <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-8 rounded-lg shadow-xl text-white">
+          <h3 className="text-3xl font-extrabold mb-6 text-center">
+            Download Data
+          </h3>
+          <hr className="mb-8 border-indigo-300" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <button
-              className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+              className="w-full bg-white text-indigo-700 font-semibold py-4 rounded-xl hover:bg-gray-100 transition transform hover:-translate-y-1 hover:shadow-lg"
               onClick={downloadMemberData}
             >
-              Download Member
+              Download Member Data
             </button>
             <button
-              className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition"
+              className="w-full bg-white text-indigo-700 font-semibold py-4 rounded-xl hover:bg-gray-100 transition transform hover:-translate-y-1 hover:shadow-lg"
               onClick={downloadMobileUserData}
             >
-              Download Mobile User
+              Download Mobile User Data
             </button>
           </div>
         </div>

@@ -38,7 +38,6 @@ const AppProvider = ({ children }) => {
       if (token) {
         if (
           currentPath === "/home" ||
-          currentPath === "/profile" ||
           currentPath === "/user-profile" ||
           currentPath === "/about" ||
           currentPath === "/portfolio" ||

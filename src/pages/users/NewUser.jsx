@@ -118,6 +118,8 @@ const NewUser = () => {
     rowsPerPageOptions: [5, 10, 25],
     responsive: "standard",
     viewColumns: false,
+    download: false,
+    print: false,
   };
 
   // console.log("newuserdata", newUserData);
