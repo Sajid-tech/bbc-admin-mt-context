@@ -44,10 +44,12 @@ const AppProvider = ({ children }) => {
           currentPath === "/portfolio" ||
           currentPath === "/enquiry" ||
           currentPath === "/new-user" ||
+          currentPath === "/user-view" ||
           currentPath === "/active-user" ||
           currentPath === "/inactive-user" ||
           currentPath === "/mobile-user" ||
           currentPath === "/share-user" ||
+          currentPath === "/share-view" ||
           currentPath === "/download" ||
           currentPath === "/change-password"
         ) {

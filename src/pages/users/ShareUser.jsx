@@ -13,6 +13,35 @@ const ShareUser = () => {
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchShareUser = async () => {
+      try {
+        if (!isPanelUp) {
+          navigate("/maintenance");
+          return;
+        }
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        const resposne = await axios.get(
+          `${BASE_URL}/api/panel-fetch-share-list`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setShareData(resposne.data);
+      } catch (error) {
+        console.error("Error fetching dashboard data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchShareUser();
+    setLoading(false);
+  }, []);
+
   const columns = [
     {
       name: "slNo",
@@ -49,7 +78,7 @@ const ShareUser = () => {
         sort: false,
         customBodyRender: (userId) => {
           return (
-            <div>
+            <div onClick={() => navigate(`/share-view?id=${userId}`)}>
               <CiEdit className="h-5 w-5 cursor-pointer" />
             </div>
           );
@@ -66,35 +95,6 @@ const ShareUser = () => {
     responsive: "standard",
     viewColumns: false,
   };
-
-  useEffect(() => {
-    const fetchShareUser = async () => {
-      try {
-        if (!isPanelUp) {
-          navigate("/maintenance");
-          return;
-        }
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const resposne = await axios.get(
-          `${BASE_URL}/api/panel-fetch-share-list`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setShareData(resposne.data);
-      } catch (error) {
-        console.error("Error fetching dashboard data", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchShareUser();
-    setLoading(false);
-  }, []);
 
   return (
     <Layout>

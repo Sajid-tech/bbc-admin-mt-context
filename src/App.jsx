@@ -17,6 +17,8 @@ import MobileUser from "./pages/users/MobileUser";
 import ShareUser from "./pages/users/ShareUser";
 import Download from "./pages/users/Download";
 import Portfolio from "./pages/website/Portfolio";
+import ShareUserById from "./pages/users/ShareUserById";
+import NewUserView from "./pages/users/NewUserView";
 
 const App = () => {
   return (
@@ -49,6 +51,10 @@ const App = () => {
           element={<ProtectedRoute element={<NewUser />} />}
         />
         <Route
+          path="/user-view"
+          element={<ProtectedRoute element={<NewUserView />} />}
+        />
+        <Route
           path="/active-user"
           element={<ProtectedRoute element={<ActiveUser />} />}
         />
@@ -63,6 +69,10 @@ const App = () => {
         <Route
           path="/share-user"
           element={<ProtectedRoute element={<ShareUser />} />}
+        />
+        <Route
+          path="/share-view"
+          element={<ProtectedRoute element={<ShareUserById />} />}
         />
         <Route
           path="/download"

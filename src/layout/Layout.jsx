@@ -23,3 +23,11 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+
+// className="min-h-screen"
+//       style={{
+//         backgroundColor: "#e5e5f7",
+//         opacity: 1,
+//         backgroundImage: "radial-gradient(#444cf7 0.5px, #e5e5f7 0.5px)",
+//         backgroundSize: "10px 10px",
+//       }}

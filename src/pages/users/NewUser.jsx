@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import MUIDataTable from "mui-datatables";
-import { IconButton, Tooltip } from "@material-tailwind/react";
-import { EditNotifications } from "@mui/icons-material";
 import { CiEdit } from "react-icons/ci";
 
 const NewUser = () => {
@@ -14,6 +12,36 @@ const NewUser = () => {
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchNewUser = async () => {
+      try {
+        if (!isPanelUp) {
+          navigate("/maintenance");
+          return;
+        }
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        const resposne = await axios.get(
+          `${BASE_URL}/api/panel-fetch-new-profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setNewUserData(resposne.data);
+        // console.log("setnewuserdata", resposne.data);
+      } catch (error) {
+        console.error("Error fetching newUserData", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchNewUser();
+    setLoading(false);
+  }, []);
+
   const columns = [
     {
       name: "slNo",
@@ -67,14 +95,14 @@ const NewUser = () => {
       },
     },
     {
-      name: "action",
+      name: "id",
       label: "Action",
       options: {
         filter: true,
         sort: false,
-        customBodyRender: (value) => {
+        customBodyRender: (userId) => {
           return (
-            <div>
+            <div onClick={() => navigate(`/user-view?id=${userId}`)}>
               <CiEdit className="h-5 w-5 cursor-pointer" />
             </div>
           );
@@ -91,35 +119,6 @@ const NewUser = () => {
     responsive: "standard",
     viewColumns: false,
   };
-
-  useEffect(() => {
-    const fetchNewUser = async () => {
-      try {
-        if (!isPanelUp) {
-          navigate("/maintenance");
-          return;
-        }
-        setLoading(true);
-        const token = localStorage.getItem("token");
-        const resposne = await axios.get(
-          `${BASE_URL}/api/panel-fetch-new-profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setNewUserData(resposne.data);
-        // console.log("setnewuserdata", resposne.data);
-      } catch (error) {
-        console.error("Error fetching newUserData", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNewUser();
-    setLoading(false);
-  }, []);
 
   // console.log("newuserdata", newUserData);
 
