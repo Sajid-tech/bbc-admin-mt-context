@@ -17,6 +17,7 @@ const AppProvider = ({ children }) => {
       const response = await axios.get(`${BASE_URL}/api/panel-check-status`);
       const datas = await response.data;
       setIsPanelUp(datas);
+
       if (datas?.success) {
         setError(false);
       } else {
@@ -36,35 +37,33 @@ const AppProvider = ({ children }) => {
       navigate("/maintenance");
     } else if (isPanelUp?.success) {
       if (token) {
-        if (
-          currentPath === "/home" ||
-          currentPath === "/user-profile" ||
-          currentPath === "/about" ||
-          currentPath === "/portfolio" ||
-          currentPath === "/enquiry" ||
-          currentPath === "/new-user" ||
-          currentPath === "/user-view" ||
-          currentPath === "/active-user" ||
-          currentPath === "/inactive-user" ||
-          currentPath === "/mobile-user" ||
-          currentPath === "/share-user" ||
-          currentPath === "/share-view" ||
-          currentPath === "/download" ||
-          currentPath === "/change-password"
-        ) {
+        const allowedPaths = [
+          "/home",
+          "/user-profile",
+          "/about",
+          "/portfolio",
+          "/enquiry",
+          "/new-user",
+          "/user-view",
+          "/active-user",
+          "/inactive-user",
+          "/mobile-user",
+          "/share-user",
+          "/share-view",
+          "/download",
+          "/change-password",
+        ];
+        if (allowedPaths.includes(currentPath)) {
           navigate(currentPath);
         } else {
           navigate("/home");
         }
       } else {
-        if (
-          currentPath === "/" ||
-          currentPath === "/register" ||
-          currentPath === "/forget-password"
-        ) {
+        const publicPaths = ["/", "/register", "/forget-password"];
+        if (publicPaths.includes(currentPath)) {
           navigate(currentPath);
         } else {
-          navigate("/"); // Redirect to login if no token
+          navigate("/");
         }
       }
     }

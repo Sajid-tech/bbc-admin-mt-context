@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { ContextPanel } from "../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,70 +11,6 @@ const MobileUser = () => {
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
-  const columns = [
-    {
-      name: "slNo",
-      label: "SL No",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1;
-        },
-      },
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "company",
-      label: "Company",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "mobile",
-      label: "Mobile",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "area",
-      label: "Area",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "referral_code",
-      label: "Referral Code",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-  ];
-
-  const options = {
-    selectableRows: "none",
-    elevation: 0,
-    rowsPerPage: 5,
-    rowsPerPageOptions: [5, 10, 25],
-    responsive: "standard",
-    viewColumns: false,
-    download: false,
-    print: false,
-  };
 
   useEffect(() => {
     const fetchMobileUser = async () => {
@@ -94,7 +30,7 @@ const MobileUser = () => {
           }
         );
 
-        setMobileUserData(resposne.data);
+        setMobileUserData(resposne?.data?.new_user);
       } catch (error) {
         console.error("Error fetching dashboard data", error);
       } finally {
@@ -104,13 +40,85 @@ const MobileUser = () => {
     fetchMobileUser();
     setLoading(false);
   }, []);
+  const columns = useMemo(
+    () => [
+      {
+        name: "slNo",
+        label: "SL No",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return tableMeta.rowIndex + 1;
+          },
+        },
+      },
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
+      {
+        name: "company",
+        label: "Company",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "mobile",
+        label: "Mobile",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "area",
+        label: "Area",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "referral_code",
+        label: "Referral Code",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+    ],
+    [mobileUserData]
+  );
+
+  const options = {
+    selectableRows: "none",
+    elevation: 0,
+    rowsPerPage: 5,
+    rowsPerPageOptions: [5, 10, 25],
+    responsive: "standard",
+    viewColumns: false,
+    download: false,
+    print: false,
+  };
+
+  const data = useMemo(
+    () => (mobileUserData ? mobileUserData : []),
+    [mobileUserData]
+  );
 
   return (
     <Layout>
       <div className="mt-5 ">
         <MUIDataTable
           title={"Mobile User List"}
-          data={mobileUserData ? mobileUserData?.new_user : []}
+          data={data}
           columns={columns}
           options={options}
         />

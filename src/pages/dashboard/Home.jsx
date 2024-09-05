@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { ContextPanel } from "../../utils/ContextPanel";
 import Layout from "../../layout/Layout";
 import { Link, useNavigate } from "react-router-dom";
@@ -37,7 +37,12 @@ const Home = () => {
     };
     fetchDashboard();
     setLoading(false);
-  }, []);
+  }, [1]);
+
+  const data = useMemo(
+    () => (dashboardData ? dashboardData : []),
+    [dashboardData]
+  );
 
   return (
     <Layout>
@@ -52,7 +57,7 @@ const Home = () => {
                   Active Users
                 </Typography>
                 <Typography variant="h4" color="white">
-                  {dashboardData?.total_active || 0}
+                  {data?.total_active || 0}
                 </Typography>
               </div>
             </div>
@@ -69,7 +74,7 @@ const Home = () => {
                   Inactive Users
                 </Typography>
                 <Typography variant="h4" color="white">
-                  {dashboardData?.total_inactive || 0}
+                  {data?.total_inactive || 0}
                 </Typography>
               </div>
             </div>

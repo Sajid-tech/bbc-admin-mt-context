@@ -33,9 +33,13 @@ const SignIn = () => {
 
       if (res.status === 200) {
         const token = res.data.UserInfo?.token;
+        const adminType = res.data.UserInfo?.user?.admin_type;
+        const detailsView = res.data.UserInfo?.user?.details_view;
         if (token) {
           // Store the token in localStorage
           localStorage.setItem("token", token);
+          localStorage.setItem("admin-type", adminType);
+          localStorage.setItem("details-view", detailsView);
           navigate("/home");
         } else {
           toast.error("Login Failed, Token not received.");

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BASE_URL from "../../base/BaseUrl";
 import Layout from "../../layout/Layout";
@@ -38,27 +38,30 @@ const ShareUserById = () => {
     }
   }, [userId]);
 
-  const columns = [
-    {
-      name: "slNo",
-      label: "SL No",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1;
+  const columns = useMemo(
+    () => [
+      {
+        name: "slNo",
+        label: "SL No",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return tableMeta.rowIndex + 1;
+          },
         },
       },
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          sort: true,
+        },
       },
-    },
-  ];
+    ],
+    [userData]
+  );
 
   const options = {
     selectableRows: "none",
@@ -67,21 +70,21 @@ const ShareUserById = () => {
     rowsPerPageOptions: [5, 10, 25],
     responsive: "standard",
     viewColumns: false,
+    print: false,
+    download: false,
   };
+
+  const data = useMemo(() => (userData ? userData : []), [userData]);
 
   return (
     <Layout>
       <div className="mt-5">
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <MUIDataTable
-            title={"User Share Details"}
-            data={userData ? userData : []}
-            columns={columns}
-            options={options}
-          />
-        )}
+        <MUIDataTable
+          title={"User Share Details"}
+          data={data}
+          columns={columns}
+          options={options}
+        />
       </div>
     </Layout>
   );

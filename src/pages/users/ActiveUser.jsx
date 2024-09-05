@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ContextPanel } from "../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -6,12 +12,14 @@ import BASE_URL from "../../base/BaseUrl";
 import MUIDataTable from "mui-datatables";
 import Layout from "../../layout/Layout";
 import { CiEdit } from "react-icons/ci";
+import { TbExchange } from "react-icons/tb";
 
 const ActiveUser = () => {
   const [activeUserData, setActiveUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
+  const AdminType = localStorage.getItem("admin-type");
 
   useEffect(() => {
     const fetchActiveUser = async () => {
@@ -40,9 +48,9 @@ const ActiveUser = () => {
     };
     fetchActiveUser();
     setLoading(false);
-  }, [activeUserData]);
+  }, []);
 
-  const onUpdateActive = async (userId) => {
+  const onUpdateActive = useCallback(async (userId) => {
     if (!userId) {
       console.error("User ID is missing");
       return;
@@ -59,82 +67,93 @@ const ActiveUser = () => {
         }
       );
       alert("User inactive successfully");
+      setActiveUserData((prevData) =>
+        prevData.filter((user) => user.id !== userId)
+      );
     } catch (error) {
       console.error("Error updating active data", error);
     }
-  };
+  }, []);
 
-  const columns = [
-    {
-      name: "slNo",
-      label: "SL No",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta) => {
-          return tableMeta.rowIndex + 1;
+  const columns = useMemo(
+    () => [
+      {
+        name: "slNo",
+        label: "SL No",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta) => {
+            return tableMeta.rowIndex + 1;
+          },
         },
       },
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "company",
-      label: "Company",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "mobile",
-      label: "Mobile",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "area",
-      label: "Area",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "referral_code",
-      label: "Referral Code",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (userId) => {
-          return (
-            <div>
-              <CiEdit
-                onClick={() => onUpdateActive(userId)}
-                className="h-5 w-5 cursor-pointer"
-              />
-            </div>
-          );
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          sort: true,
         },
       },
-    },
-  ];
+      {
+        name: "company",
+        label: "Company",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "mobile",
+        label: "Mobile",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "area",
+        label: "Area",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "referral_code",
+        label: "Referral Code",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "id",
+        label: "Action",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (userId, tableMeta) => {
+            const user = activeUserData[tableMeta.rowIndex];
+            const detailsView = user ? user.details_view : null;
+            return (
+              <div className="flex items-center space-x-2">
+                <CiEdit
+                  onClick={() => onUpdateActive(userId)}
+                  className="h-5 w-5 cursor-pointer"
+                />
+                {detailsView === 0 && AdminType === "superadmin" && (
+                  <TbExchange className="h-5 w-5 cursor-pointer" />
+                )}
+              </div>
+            );
+          },
+        },
+      },
+    ],
+    [activeUserData, onUpdateActive]
+  );
 
   const options = {
     selectableRows: "none",
@@ -147,12 +166,17 @@ const ActiveUser = () => {
     print: false,
   };
 
+  const data = useMemo(
+    () => (activeUserData ? activeUserData : []),
+    [activeUserData]
+  );
+
   return (
     <Layout>
       <div className="mt-5">
         <MUIDataTable
           title={"Active User List"}
-          data={activeUserData ? activeUserData : []}
+          data={data}
           columns={columns}
           options={options}
         />

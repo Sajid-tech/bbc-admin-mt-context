@@ -3,10 +3,12 @@ import Layout from "../../layout/Layout";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
-import { CardHeader, Typography } from "@material-tailwind/react";
 
 const Portfolio = () => {
   const [sliderImages, setSliderImages] = useState({});
+
+  const [selectedImages, setSelectedImages] = useState({});
+  const [id, setId] = useState(null);
 
   useEffect(() => {
     const fetchSliderImages = async () => {
@@ -17,7 +19,8 @@ const Portfolio = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setSliderImages(response.data.slider);
+        setSliderImages(response.data.slider || {});
+        setId(response.data.slider.id || {});
       } catch (error) {
         console.error("Error fetching slider images", error);
       }
@@ -27,17 +30,69 @@ const Portfolio = () => {
   }, []);
 
   const handleFileChange = (e, index) => {
-    // Handle file change here
+    const file = e.target.files[0];
+    setSelectedImages((prevSelectedImages) => ({
+      ...prevSelectedImages,
+      [`product_image${index}`]: file,
+    }));
   };
 
-  // Convert object to array of [key, value] pairs, then slice to exclude the first item
+  // api/panel-update-slider
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem("token");
+      const formData = new FormData();
+
+      formData.append("id", sliderImages.id);
+
+      for (let i = 1; i <= 5; i++) {
+        if (selectedImages[`product_image${i}`]) {
+          console.log(
+            `Adding image ${i}:`,
+            selectedImages[`product_image${i}`]
+          );
+          formData.append(
+            `product_image${i}`,
+            selectedImages[`product_image${i}`]
+          );
+        }
+      }
+
+      const response = await axios.post(
+        `${BASE_URL}/api/panel-update-slider/${id}/?_method=PUT`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        alert("Portfolio images updated successfully!");
+      } else {
+        alert("Failed to update portfolio images. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating slider images:", error);
+      alert("An error occurred while updating the portfolio images.");
+    }
+  };
+
+  console.log("Slider ID:", id);
+  console.log("Slider Images:", sliderImages);
+
   const imagesArray = Object.entries(sliderImages).slice(1);
 
   return (
     <Layout>
       <div className="container mx-auto mt-8">
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <form id="addIndiv">
+          <form id="addIndiv" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {imagesArray.map(([key, item], index) => (
                 <div key={index} className="flex flex-col items-center">
@@ -46,7 +101,7 @@ const Portfolio = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => handleFileChange(e, index + 2)}
+                      onChange={(e) => handleFileChange(e, index + 1)}
                       className="mt-2 block w-full text-sm text-gray-900 border border-gray-300 p-2 rounded-lg hover:border-blue-200 cursor-pointer bg-gray-50"
                     />
                   </label>
@@ -62,7 +117,6 @@ const Portfolio = () => {
             <div className="mt-6 flex space-x-4 justify-center">
               <button
                 type="submit"
-                disabled
                 className="bg-purple-600 text-white py-2 px-4 rounded-lg hover:bg-purple-700 transition"
               >
                 Update

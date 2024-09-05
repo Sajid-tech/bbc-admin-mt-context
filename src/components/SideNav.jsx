@@ -20,6 +20,9 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
   const { pathname } = useLocation();
 
+  const adminType = localStorage.getItem("admin-type");
+  const detailsView = localStorage.getItem("details-view");
+
   // Hardcoded sidenavType to "dark"
   const sidenavType = "dark";
 
@@ -48,7 +51,91 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   useEffect(() => {
     setOpenSideNav(false);
   }, [pathname, setOpenSideNav]);
-  //sajid
+
+  // defne the menu item as per role
+
+  const menuItems = [
+    {
+      to: "/home",
+      icon: <HomeIcon className="w-5 h-5 text-inherit" />,
+      text: "Dashboard",
+      roles: ["admin", "superadmin", "user", "userType1"],
+    },
+    {
+      to: "/user-profile",
+      icon: <UserCircleIcon className="w-5 h-5 text-inherit" />,
+      text: "Profile",
+      roles: ["admin", "superadmin", "user", "userType1"],
+    },
+    {
+      to: "/about",
+      icon: <InformationCircleIcon className="w-5 h-5 text-inherit" />,
+      text: "About Us",
+      roles: ["admin", "superadmin", "userType1"],
+    },
+    {
+      to: "/portfolio",
+      icon: <BriefcaseIcon className="w-5 h-5 text-inherit" />,
+      text: "Portfolio",
+      roles: ["admin", "superadmin", "userType1"],
+    },
+    {
+      to: "/enquiry",
+      icon: <ChatBubbleLeftIcon className="w-5 h-5 text-inherit" />,
+      text: "Enquiry",
+      roles: ["admin", "superadmin", "userType1"],
+    },
+    {
+      to: "/new-user",
+      icon: <UserPlusIcon className="w-5 h-5 text-inherit" />,
+      text: "New User",
+      roles: ["admin", "superadmin"],
+    },
+    {
+      to: "/active-user",
+      icon: <UserIcon className="w-5 h-5 text-inherit" />,
+      text: "Active User",
+      roles: ["admin", "superadmin"],
+    },
+    {
+      to: "/inactive-user",
+      icon: <UserMinusIcon className="w-5 h-5 text-inherit" />,
+      text: "Inactive User",
+      roles: ["admin", "superadmin"],
+    },
+    {
+      to: "/mobile-user",
+      icon: <DevicePhoneMobileIcon className="w-5 h-5 text-inherit" />,
+      text: "Mobile User",
+      roles: ["admin", "superadmin"],
+    },
+    {
+      to: "/share-user",
+      icon: <ShareIcon className="w-5 h-5 text-inherit" />,
+      text: "Share User",
+      roles: ["admin", "superadmin"],
+    },
+    {
+      to: "/download",
+      icon: <ArrowDownTrayIcon className="w-5 h-5 text-inherit" />,
+      text: "Download",
+      roles: ["admin", "superadmin"],
+    },
+  ];
+
+  // role-type
+
+  const getFilteredMenuItems = () => {
+    if (adminType === "admin" || adminType == "superadmin") {
+      return menuItems;
+    }
+    if (adminType === "user") {
+      return detailsView === "0"
+        ? menuItems.filter((item) => item.roles.includes("user"))
+        : menuItems.filter((item) => item.roles.includes("userType1"));
+    }
+  };
+
   return (
     <aside
       ref={sidenavRef}
@@ -56,7 +143,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
         openSideNav ? "translate-x-0" : "-translate-x-80"
       } fixed inset-0 z-50 my-4 ml-4 h-[calc(100vh-32px)] w-72 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100`}
     >
-      <div className={`relative bg-blue-50 rounded-xl`}>
+      <div className={`relative bg-white rounded-xl`}>
         <Link to="/home" className="flex items-center justify-center p-4">
           <div className="flex items-center">
             <img src="/logo.png" alt="Logo" className="h-12 w-auto" />
@@ -75,231 +162,28 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       </div>
       <div className="m-4">
         <ul className="mb-4 flex flex-col  gap-[6px]">
-          {/* dashboard */}
-          <li>
-            <NavLink to="/home">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <HomeIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
+          {getFilteredMenuItems().map((item) => (
+            <li key={item.to}>
+              <NavLink to={item.to}>
+                {({ isActive }) => (
+                  <Button
+                    variant={isActive ? "gradient" : "text"}
+                    color="white"
+                    className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
+                    fullWidth
                   >
-                    Dashboard
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-
-          <li>
-            <NavLink to="/user-profile">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <UserCircleIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Profile
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          {/* website  */}
-          <li>
-            <NavLink to="/about">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <InformationCircleIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    About Us
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/portfolio">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <BriefcaseIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Portfolio
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/enquiry">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <ChatBubbleLeftIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Enquiry
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          {/* Admin  */}
-          <li>
-            <NavLink to="/new-user">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <UserPlusIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    New User
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/active-user">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <UserIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Active User
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/inactive-user">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <UserMinusIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Inactive User
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/mobile-user">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <DevicePhoneMobileIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Mobile User
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/share-user">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <ShareIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Share User
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/download">
-              {({ isActive }) => (
-                <Button
-                  variant={isActive ? "gradient" : "text"}
-                  color="white"
-                  // className="flex items-center gap-4 px-4 capitalize"
-                  className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
-                  fullWidth
-                >
-                  <ArrowDownTrayIcon className="w-5 h-5 text-inherit" />
-                  <Typography
-                    color="inherit"
-                    className="font-medium capitalize"
-                  >
-                    Download
-                  </Typography>
-                </Button>
-              )}
-            </NavLink>
-          </li>
+                    {item.icon}
+                    <Typography
+                      color="inherit"
+                      className="font-medium capitalize"
+                    >
+                      {item.text}
+                    </Typography>
+                  </Button>
+                )}
+              </NavLink>
+            </li>
+          ))}
 
           {/* Add more hardcoded routes here as needed */}
         </ul>

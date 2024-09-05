@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { ContextPanel } from "../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,7 +37,7 @@ const InactiveUser = () => {
           }
         );
 
-        setInActiveUserData(resposne.data);
+        setInActiveUserData(resposne?.data?.inactive);
       } catch (error) {
         console.error("Error fetching inactive data", error);
       } finally {
@@ -40,9 +46,9 @@ const InactiveUser = () => {
     };
     fetchInActiveUser();
     setLoading(false);
-  }, [inActiveUserData]);
-  //sajid
-  const onUpdateInActive = async (userId) => {
+  }, []);
+
+  const onUpdateInActive = useCallback(async (userId) => {
     if (!userId) {
       console.error("User ID is missing");
       return;
@@ -59,81 +65,87 @@ const InactiveUser = () => {
         }
       );
       alert("User active successfully");
+      setInActiveUserData((prevData) =>
+        prevData.filter((user) => user.id !== userId)
+      );
     } catch (error) {
       console.error("Error updating inactive update data", error);
     }
-  };
-  const columns = [
-    {
-      name: "slNo",
-      label: "SL No",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1;
+  }, []);
+  const columns = useMemo(
+    () => [
+      {
+        name: "slNo",
+        label: "SL No",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return tableMeta.rowIndex + 1;
+          },
         },
       },
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "company",
-      label: "Company",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "mobile",
-      label: "Mobile",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "area",
-      label: "Area",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "referral_code",
-      label: "Referral Code",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "id",
-      label: "Action",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (userId) => {
-          return (
-            <div>
-              <CiEdit
-                onClick={() => onUpdateInActive(userId)}
-                className="h-5 w-5 cursor-pointer"
-              />
-            </div>
-          );
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          sort: true,
         },
       },
-    },
-  ];
+      {
+        name: "company",
+        label: "Company",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "mobile",
+        label: "Mobile",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "area",
+        label: "Area",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "referral_code",
+        label: "Referral Code",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "id",
+        label: "Action",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (userId) => {
+            return (
+              <div>
+                <CiEdit
+                  onClick={() => onUpdateInActive(userId)}
+                  className="h-5 w-5 cursor-pointer"
+                />
+              </div>
+            );
+          },
+        },
+      },
+    ],
+    [inActiveUserData, onUpdateInActive]
+  );
 
   const options = {
     selectableRows: "none",
@@ -146,12 +158,17 @@ const InactiveUser = () => {
     print: false,
   };
 
+  const data = useMemo(
+    () => (inActiveUserData ? inActiveUserData : []),
+    [inActiveUserData]
+  );
+
   return (
     <Layout>
       <div className="mt-5 ">
         <MUIDataTable
           title={"InActive User List"}
-          data={inActiveUserData ? inActiveUserData?.inactive : []}
+          data={data}
           columns={columns}
           options={options}
         />

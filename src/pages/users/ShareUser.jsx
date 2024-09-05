@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { ContextPanel } from "../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,7 +31,7 @@ const ShareUser = () => {
           }
         );
 
-        setShareData(resposne.data);
+        setShareData(resposne?.data?.new_user);
       } catch (error) {
         console.error("Error fetching dashboard data", error);
       } finally {
@@ -42,50 +42,53 @@ const ShareUser = () => {
     setLoading(false);
   }, []);
 
-  const columns = [
-    {
-      name: "slNo",
-      label: "SL No",
-      options: {
-        filter: false,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return tableMeta.rowIndex + 1;
+  const columns = useMemo(
+    () => [
+      {
+        name: "slNo",
+        label: "SL No",
+        options: {
+          filter: false,
+          sort: false,
+          customBodyRender: (value, tableMeta, updateValue) => {
+            return tableMeta.rowIndex + 1;
+          },
         },
       },
-    },
-    {
-      name: "name",
-      label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "no_of_counts",
-      label: "Views",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
-      name: "share_from_id",
-      label: "Action",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (userId) => {
-          return (
-            <div onClick={() => navigate(`/share-view?id=${userId}`)}>
-              <CiEdit className="h-5 w-5 cursor-pointer" />
-            </div>
-          );
+      {
+        name: "name",
+        label: "Name",
+        options: {
+          filter: true,
+          sort: true,
         },
       },
-    },
-  ];
+      {
+        name: "no_of_counts",
+        label: "Views",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "share_from_id",
+        label: "Action",
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (userId) => {
+            return (
+              <div onClick={() => navigate(`/share-view?id=${userId}`)}>
+                <CiEdit className="h-5 w-5 cursor-pointer" />
+              </div>
+            );
+          },
+        },
+      },
+    ],
+    [shareData]
+  );
 
   const options = {
     selectableRows: "none",
@@ -98,12 +101,14 @@ const ShareUser = () => {
     print: false,
   };
 
+  const data = useMemo(() => (shareData ? shareData : []), [shareData]);
+
   return (
     <Layout>
       <div className="mt-5 ">
         <MUIDataTable
           title={"Share User List"}
-          data={shareData ? shareData?.new_user : []}
+          data={data}
           columns={columns}
           options={options}
         />

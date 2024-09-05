@@ -47,12 +47,8 @@ const UserProfile = () => {
     profile_tag: "",
   });
   const [loading, setLoading] = useState(false);
+  const [id, setId] = useState(null);
   const { isPanelUp } = useContext(ContextPanel);
-  const genderOptions = [
-    { value: "male", label: "Male" },
-    { value: "female", label: "Female" },
-    { value: "other", label: "Other" },
-  ];
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,6 +69,7 @@ const UserProfile = () => {
           }
         );
         setUserProfileData(resposne.data.profile);
+        setId(resposne.data.profile.id);
         console.log(resposne.data);
       } catch (error) {
         console.error("Error fetching dashboard data", error);
@@ -90,6 +87,32 @@ const UserProfile = () => {
     setUserProfileData({ ...userProfileData, [name]: value });
   };
 
+  // update handle
+
+  const handleSumbit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${BASE_URL}/api/panel-update-profile/${id}`,
+        userProfileData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Profile update succesfully");
+    } catch (error) {
+      console.error("Error updating profille", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Layout>
       <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 mt-2">
@@ -101,7 +124,12 @@ const UserProfile = () => {
               </Typography>
             </CardHeader>
             <CardBody className="p-4 sm:p-6 lg:p-8">
-              <form id="addIndiv" autoComplete="off" className="space-y-6">
+              <form
+                onSubmit={handleSumbit}
+                id="addIndiv"
+                autoComplete="off"
+                className="space-y-6"
+              >
                 <div className="flex justify-center mb-6">
                   <div className="relative">
                     {userProfileData?.image ? (

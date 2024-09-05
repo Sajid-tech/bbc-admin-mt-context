@@ -103,7 +103,7 @@ const DashboardNavbar = ({ openSideNav, setOpenSideNav }) => {
             placement="bottom-end"
           >
             <MenuHandler>
-              <IconButton variant="text" color="orange">
+              <IconButton variant="text" color="white">
                 <UserCircleIcon className="h-5 w-5 text-red" />
               </IconButton>
             </MenuHandler>
