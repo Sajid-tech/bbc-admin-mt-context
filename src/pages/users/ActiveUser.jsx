@@ -75,6 +75,28 @@ const ActiveUser = () => {
     }
   }, []);
 
+  const onUpdateUser = useCallback(async (userId) => {
+    if (!userId) {
+      alert("User id is missing");
+      return;
+    }
+    try {
+      const token = localStorage.getItem("token");
+      await axios.put(
+        `${BASE_URL}/api/panel-update-details/${userId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      alert("User changed to gold");
+    } catch (error) {
+      console.error("Error update on actiavte gold user");
+    }
+  }, []);
+
   const columns = useMemo(
     () => [
       {
@@ -144,7 +166,10 @@ const ActiveUser = () => {
                   className="h-5 w-5 cursor-pointer"
                 />
                 {detailsView === 0 && AdminType === "superadmin" && (
-                  <TbExchange className="h-5 w-5 cursor-pointer" />
+                  <TbExchange
+                    onClick={() => onUpdateUser(userId)}
+                    className="h-5 w-5 cursor-pointer"
+                  />
                 )}
               </div>
             );
