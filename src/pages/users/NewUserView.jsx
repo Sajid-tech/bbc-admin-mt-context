@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import {
@@ -14,6 +14,9 @@ import {
   Tab,
   TabPanel,
   Avatar,
+  Button,
+  Option,
+  Select,
 } from "@material-tailwind/react";
 import {
   UserIcon,
@@ -28,10 +31,15 @@ import {
 const NewUserView = () => {
   const [newUserData, setNewUserData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [selectedPType, setSelectedPType] = useState("BBC Main");
+  const [id, setId] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
   //get user id fro th eurl
 
   const userId = new URLSearchParams(location.search).get("id");
+
+  console.log("useid check", userId);
 
   useEffect(() => {
     const fetchNewUserData = async () => {
@@ -47,6 +55,8 @@ const NewUserView = () => {
           }
         );
         setNewUserData(response.data.new_user);
+        setId(response.data.new_user.id);
+        console.log(response.data.new_user);
       } catch (error) {
         console.error("Error fetching user data", error);
       } finally {
@@ -58,6 +68,34 @@ const NewUserView = () => {
       fetchNewUserData();
     }
   }, [userId]);
+
+  // panel-update-new-profile
+
+  const handleActivate = async () => {
+    if (!id) {
+      console.error("No user data available for activation");
+      return;
+    }
+    try {
+      const token = localStorage.getItem("token");
+      const data = { p_type: selectedPType };
+      console.log("payload data", data);
+      await axios.put(`${BASE_URL}/api/panel-update-new-profile/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      alert("Profile activating succesfully");
+      navigate("/active-user");
+    } catch (error) {
+      console.error("Error activating Profile", error);
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/home");
+  };
 
   const ProfileSection = ({ icon: Icon, title, value }) => (
     <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 mb-4">
@@ -226,6 +264,29 @@ const NewUserView = () => {
                 </TabPanel>
               </TabsBody>
             </Tabs>
+            <div className="flex flex-col space-y-4 mt-6">
+              <div className="flex items-center space-x-4">
+                <Select
+                  label="Group"
+                  value={selectedPType}
+                  onChange={(value) => setSelectedPType(value)}
+                  className="w-full"
+                >
+                  <Option value="BBC Main">BBC Main</Option>
+                  <Option value="BBC Udayan">BBC Udayan</Option>
+                  <Option value="ALL">ALL</Option>
+                </Select>
+              </div>
+            </div>
+
+            <div className="flex lg:justify-start justify-between space-x-4 mt-6">
+              <Button color="blue" onClick={handleActivate}>
+                Activate
+              </Button>
+              <Button color="red" onClick={handleCancel}>
+                Cancel
+              </Button>
+            </div>
           </CardBody>
         </Card>
       </div>
