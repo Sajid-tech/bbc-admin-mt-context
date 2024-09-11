@@ -6,14 +6,14 @@ import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import MUIDataTable from "mui-datatables";
 
-const Enquiry = () => {
-  const [enquiryData, setEnquiryData] = useState(null);
+const Contact = () => {
+  const [contactData, setContactData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEnquiry = async () => {
+    const fetchContact = async () => {
       try {
         if (!isPanelUp) {
           navigate("/maintenance");
@@ -22,7 +22,7 @@ const Enquiry = () => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const resposne = await axios.get(
-          `${BASE_URL}/api/panel-fetch-enquiry`,
+          `${BASE_URL}/api/panel-fetch-contact`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -30,14 +30,14 @@ const Enquiry = () => {
           }
         );
 
-        setEnquiryData(resposne?.data?.enquiry);
+        setContactData(resposne?.data?.contact);
       } catch (error) {
         console.error("Error fetching dashboard data", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchEnquiry();
+    fetchContact();
     setLoading(false);
   }, []);
 
@@ -87,7 +87,7 @@ const Enquiry = () => {
         },
       },
     ],
-    [enquiryData]
+    [contactData]
   );
 
   const options = {
@@ -101,13 +101,13 @@ const Enquiry = () => {
     print: false,
   };
 
-  const data = useMemo(() => (enquiryData ? enquiryData : []), [enquiryData]);
+  const data = useMemo(() => (contactData ? contactData : []), [contactData]);
 
   return (
     <Layout>
       <div className="mt-5 ">
         <MUIDataTable
-          title={"Enquiry List"}
+          title={"Contact List from Website"}
           data={data}
           columns={columns}
           options={options}
@@ -117,4 +117,6 @@ const Enquiry = () => {
   );
 };
 
-export default Enquiry;
+export default Contact;
+
+// panel-fetch-contact

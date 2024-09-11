@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
 import { useEffect, useRef } from "react";
+import { MdOutlineContactPage, MdOutlineFeedback } from "react-icons/md";
 
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
   const sidenavRef = useRef(null);
@@ -110,6 +111,18 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       roles: ["admin", "superadmin"],
     },
     {
+      to: "/feedback",
+      icon: <MdOutlineFeedback className="w-5 h-5 text-inherit" />,
+      text: "Feedback",
+      roles: ["superadmin"],
+    },
+    {
+      to: "/contact",
+      icon: <MdOutlineContactPage className="w-5 h-5 text-inherit" />,
+      text: "Contact",
+      roles: ["admin", "superadmin"],
+    },
+    {
       to: "/share-user",
       icon: <ShareIcon className="w-5 h-5 text-inherit" />,
       text: "Share User",
@@ -126,8 +139,11 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
   // role-type
 
   const getFilteredMenuItems = () => {
-    if (adminType === "admin" || adminType == "superadmin") {
+    if (adminType == "superadmin") {
       return menuItems;
+    }
+    if (adminType === "admin") {
+      return menuItems.filter((item) => item.roles.includes("admin"));
     }
     if (adminType === "user") {
       return detailsView === "0"

@@ -48,6 +48,8 @@ const AppProvider = ({ children }) => {
           "/active-user",
           "/inactive-user",
           "/mobile-user",
+          "/feedback",
+          "/contact",
           "/share-user",
           "/share-view",
           "/download",

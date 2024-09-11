@@ -2,18 +2,17 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import Layout from "../../layout/Layout";
 import { ContextPanel } from "../../utils/ContextPanel";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
+import axios from "axios";
 import MUIDataTable from "mui-datatables";
-
-const Enquiry = () => {
-  const [enquiryData, setEnquiryData] = useState(null);
+const Feedback = () => {
+  const [feedbackData, setFeedbackData] = useState(null);
   const [loading, setLoading] = useState(false);
   const { isPanelUp } = useContext(ContextPanel);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEnquiry = async () => {
+    const fetchFeedback = async () => {
       try {
         if (!isPanelUp) {
           navigate("/maintenance");
@@ -22,7 +21,7 @@ const Enquiry = () => {
         setLoading(true);
         const token = localStorage.getItem("token");
         const resposne = await axios.get(
-          `${BASE_URL}/api/panel-fetch-enquiry`,
+          `${BASE_URL}/api/panel-fetch-feedback`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -30,14 +29,14 @@ const Enquiry = () => {
           }
         );
 
-        setEnquiryData(resposne?.data?.enquiry);
+        setFeedbackData(resposne?.data?.feedback);
       } catch (error) {
         console.error("Error fetching dashboard data", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchEnquiry();
+    fetchFeedback();
     setLoading(false);
   }, []);
 
@@ -55,7 +54,7 @@ const Enquiry = () => {
         },
       },
       {
-        name: "contact_name",
+        name: "feedback_name",
         label: "Name",
         options: {
           filter: true,
@@ -63,15 +62,15 @@ const Enquiry = () => {
         },
       },
       {
-        name: "contact_email",
-        label: "Email",
+        name: "feedback_type",
+        label: "Type",
         options: {
           filter: true,
           sort: false,
         },
       },
       {
-        name: "contact_mobile",
+        name: "feedback_mobile",
         label: "Mobile",
         options: {
           filter: true,
@@ -79,7 +78,15 @@ const Enquiry = () => {
         },
       },
       {
-        name: "contact_message",
+        name: "feedback_subject",
+        label: "Subject",
+        options: {
+          filter: true,
+          sort: false,
+        },
+      },
+      {
+        name: "feedback_description",
         label: "Message",
         options: {
           filter: true,
@@ -87,7 +94,7 @@ const Enquiry = () => {
         },
       },
     ],
-    [enquiryData]
+    [feedbackData]
   );
 
   const options = {
@@ -101,13 +108,16 @@ const Enquiry = () => {
     print: false,
   };
 
-  const data = useMemo(() => (enquiryData ? enquiryData : []), [enquiryData]);
+  const data = useMemo(
+    () => (feedbackData ? feedbackData : []),
+    [feedbackData]
+  );
 
   return (
     <Layout>
       <div className="mt-5 ">
         <MUIDataTable
-          title={"Enquiry List"}
+          title={"Feedback List"}
           data={data}
           columns={columns}
           options={options}
@@ -117,4 +127,4 @@ const Enquiry = () => {
   );
 };
 
-export default Enquiry;
+export default Feedback;
