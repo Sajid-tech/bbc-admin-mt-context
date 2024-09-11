@@ -13,6 +13,7 @@ import MUIDataTable from "mui-datatables";
 import Layout from "../../layout/Layout";
 import { CiEdit } from "react-icons/ci";
 import { TbExchange } from "react-icons/tb";
+import toast, { Toaster } from "react-hot-toast";
 
 const ActiveUser = () => {
   const [activeUserData, setActiveUserData] = useState(null);
@@ -66,12 +67,13 @@ const ActiveUser = () => {
           },
         }
       );
-      alert("User inactive successfully");
+      toast.success("User inactive successfully");
       setActiveUserData((prevData) =>
         prevData.filter((user) => user.id !== userId)
       );
     } catch (error) {
       console.error("Error updating active data", error);
+      toast.error("Inactivate Err ");
     }
   }, []);
 
@@ -91,9 +93,10 @@ const ActiveUser = () => {
           },
         }
       );
-      alert("User changed to gold");
+      toast.success("Hurray! you are became Gold user");
     } catch (error) {
       console.error("Error update on actiavte gold user");
+      toast.error("Err while change the user to gold");
     }
   }, []);
 
@@ -162,11 +165,13 @@ const ActiveUser = () => {
             return (
               <div className="flex items-center space-x-2">
                 <CiEdit
+                  title="Inactivate"
                   onClick={() => onUpdateActive(userId)}
                   className="h-5 w-5 cursor-pointer"
                 />
                 {detailsView === 0 && AdminType === "superadmin" && (
                   <TbExchange
+                    title="changed to gold user"
                     onClick={() => onUpdateUser(userId)}
                     className="h-5 w-5 cursor-pointer"
                   />
@@ -198,6 +203,27 @@ const ActiveUser = () => {
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <div className="mt-5">
         <MUIDataTable
           title={"Active User List"}

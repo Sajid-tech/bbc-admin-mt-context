@@ -3,6 +3,8 @@ import Layout from "../../layout/Layout";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 
+import toast, { Toaster } from "react-hot-toast";
+
 const Download = () => {
   //use toaster
   //logic
@@ -34,14 +36,17 @@ const Download = () => {
       link.click();
 
       console.log(`${fileName} downloaded successfully.`);
+      // toast.success("Member data Download");
     } catch (err) {
       console.error(`Error downloading ${fileName}:`, err);
+      toast.error("Err on Downloading");
     }
   };
 
   const downloadMemberData = (e) => {
     e.preventDefault();
     downloadReport(`${BASE_URL}/api/download-member-report`, "member.csv");
+    toast.success("Member data Download");
   };
 
   const downloadMobileUserData = (e) => {
@@ -50,10 +55,32 @@ const Download = () => {
       `${BASE_URL}/api/download-mobile-user-report`,
       "mobileuser.csv"
     );
+    toast.success("Mobile User data Download");
   };
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <div className="container mx-auto mt-10 px-4">
         <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-8 rounded-lg shadow-xl text-white">
           <h3 className="text-3xl font-extrabold mb-6 text-center">

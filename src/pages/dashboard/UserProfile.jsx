@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Layout from "../../layout/Layout";
 import { ContextPanel } from "../../utils/ContextPanel";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
+import toast, { Toaster } from "react-hot-toast";
+
 import {
   Input,
   Button,
@@ -22,7 +24,12 @@ import {
   GlobeAltIcon,
   PhoneIcon,
 } from "@heroicons/react/24/solid";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaTag, FaWhatsapp } from "react-icons/fa";
+import { BiMaleFemale } from "react-icons/bi";
+import { MdEmail } from "react-icons/md";
+import { PiMapPinAreaFill } from "react-icons/pi";
+import { CiLocationOn, CiShoppingTag } from "react-icons/ci";
+import { FaLocationDot } from "react-icons/fa6";
 
 const UserProfile = () => {
   const [userProfileData, setUserProfileData] = useState({
@@ -105,24 +112,45 @@ const UserProfile = () => {
         }
       );
 
-      alert("Profile update succesfully");
+      toast.success("Profile Updated");
     } catch (error) {
       console.error("Error updating profille", error);
+      toast.error("Profile Updated err");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleHome = () => {
+    navigate("/home");
+  };
+
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12 mt-2">
         <div className="relative py-3 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
           <Card className="bg-white shadow-lg rounded-lg ">
-            <CardHeader variant="gradient" className=" bg-blue-100 mb-2 p-6">
-              <Typography variant="h6" color="black">
-                Profile
-              </Typography>
-            </CardHeader>
             <CardBody className="p-4 sm:p-6 lg:p-8">
               <form
                 onSubmit={handleSumbit}
@@ -143,12 +171,12 @@ const UserProfile = () => {
                         <UserCircleIcon className="w-16 h-16 sm:w-24 sm:h-24 text-gray-400" />
                       </div>
                     )}
-                    <label
+                    {/* <label
                       htmlFor="image-upload"
                       className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition-colors"
                     >
                       <CameraIcon className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-                    </label>
+                    </label> */}
                     <input
                       id="image-upload"
                       name="image"
@@ -183,6 +211,7 @@ const UserProfile = () => {
                       value={userProfileData.gender}
                       onChange={handleInputChange}
                       label="Gender"
+                      icon={<BiMaleFemale className="h-5 w-5" />}
                       className="w-full"
                     />
                   </div>
@@ -205,7 +234,7 @@ const UserProfile = () => {
                       value={userProfileData.email}
                       onChange={handleInputChange}
                       label="Email"
-                      icon={<UserCircleIcon className="h-5 w-5" />}
+                      icon={<MdEmail className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -258,7 +287,7 @@ const UserProfile = () => {
                       value={userProfileData.company}
                       onChange={handleInputChange}
                       label="Name of the Company"
-                      icon={<BriefcaseIcon className="h-5 w-5" />}
+                      icon={<BriefcaseIcon className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -269,7 +298,7 @@ const UserProfile = () => {
                       value={userProfileData.company_short}
                       onChange={handleInputChange}
                       label="Company Short Name"
-                      icon={<BriefcaseIcon className="h-5 w-5" />}
+                      icon={<BriefcaseIcon className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -280,7 +309,7 @@ const UserProfile = () => {
                       value={userProfileData.category}
                       onChange={handleInputChange}
                       label="Business Category"
-                      icon={<BriefcaseIcon className="h-5 w-5" />}
+                      icon={<BriefcaseIcon className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -300,7 +329,7 @@ const UserProfile = () => {
                       value={userProfileData.experience}
                       onChange={handleInputChange}
                       label="Experience"
-                      icon={<BriefcaseIcon className="h-5 w-5" />}
+                      icon={<BriefcaseIcon className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -321,7 +350,7 @@ const UserProfile = () => {
                       value={userProfileData.area}
                       onChange={handleInputChange}
                       label="Area"
-                      icon={<UserCircleIcon className="h-5 w-5" />}
+                      icon={<PiMapPinAreaFill className="h-5 w-5" />}
                       className="w-full"
                     />
                   </div>
@@ -332,7 +361,7 @@ const UserProfile = () => {
                       value={userProfileData.address}
                       onChange={handleInputChange}
                       label="Address"
-                      icon={<UserCircleIcon className="h-5 w-5" />}
+                      icon={<FaLocationDot className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -343,7 +372,7 @@ const UserProfile = () => {
                       value={userProfileData.product}
                       onChange={handleInputChange}
                       label="Products / Services"
-                      icon={<BriefcaseIcon className="h-5 w-5" />}
+                      icon={<BriefcaseIcon className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -354,7 +383,7 @@ const UserProfile = () => {
                       value={userProfileData.profile_tag}
                       onChange={handleInputChange}
                       label="Profile Tag"
-                      icon={<UserCircleIcon className="h-5 w-5" />}
+                      icon={<FaTag className="h-4 w-4" />}
                       className="w-full"
                     />
                   </div>
@@ -373,9 +402,9 @@ const UserProfile = () => {
                     type="button"
                     color="red"
                     className="w-full sm:w-auto"
-                    onClick={() => setUserProfileData({})}
+                    onClick={handleHome}
                   >
-                    Reset
+                    Cancel
                   </Button>
                 </CardFooter>
               </form>

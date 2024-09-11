@@ -12,6 +12,7 @@ import BASE_URL from "../../base/BaseUrl";
 import Layout from "../../layout/Layout";
 import MUIDataTable from "mui-datatables";
 import { CiEdit } from "react-icons/ci";
+import toast, { Toaster } from "react-hot-toast";
 
 const InactiveUser = () => {
   const [inActiveUserData, setInActiveUserData] = useState(null);
@@ -64,7 +65,7 @@ const InactiveUser = () => {
           },
         }
       );
-      alert("User active successfully");
+      toast.success("User became active");
       setInActiveUserData((prevData) =>
         prevData.filter((user) => user.id !== userId)
       );
@@ -135,6 +136,7 @@ const InactiveUser = () => {
             return (
               <div>
                 <CiEdit
+                  title="Activate"
                   onClick={() => onUpdateInActive(userId)}
                   className="h-5 w-5 cursor-pointer"
                 />
@@ -165,6 +167,27 @@ const InactiveUser = () => {
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <div className="mt-5 ">
         <MUIDataTable
           title={"InActive User List"}

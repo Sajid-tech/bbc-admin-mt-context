@@ -6,6 +6,7 @@ import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
 import { FaEdit } from "react-icons/fa";
 import { HiOutlineSave } from "react-icons/hi";
+import toast, { Toaster } from "react-hot-toast";
 
 const About = () => {
   const [about, setAbout] = useState([]);
@@ -57,9 +58,10 @@ const About = () => {
           },
         }
       );
-      alert("update succesfull");
+      toast.success("About Updated");
     } catch (error) {
       console.error("Error updating data", error);
+      toast.error("About Updated err");
     }
   };
 
@@ -70,6 +72,27 @@ const About = () => {
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+
       <div className="p-6  bg-gray-50 min-h-screen">
         <div className="w-full mx-auto bg-white shadow-md rounded-lg p-6">
           <div className="flex justify-between items-center mb-4">
@@ -80,7 +103,7 @@ const About = () => {
             onChange={handleInputChange}
             className="w-full h-60 p-4 border border-gray-300 rounded-lg resize-none"
           />
-          <div className="mt-6 flex justify-between space-x-4">
+          <div className="mt-6 flex justify-end space-x-4">
             <button
               onClick={handleUpdateAbout}
               disabled={!isUpdated}

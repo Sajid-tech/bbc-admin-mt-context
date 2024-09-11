@@ -3,6 +3,7 @@ import Layout from "../../layout/Layout";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../../base/BaseUrl";
+import toast, { Toaster } from "react-hot-toast";
 import {
   Card,
   CardHeader,
@@ -86,10 +87,11 @@ const NewUserView = () => {
         },
       });
 
-      alert("Profile activating succesfully");
+      toast.success("New user created");
       navigate("/active-user");
     } catch (error) {
       console.error("Error activating Profile", error);
+      toast.error("Err while creating new user");
     }
   };
 
@@ -121,6 +123,27 @@ const NewUserView = () => {
 
   return (
     <Layout>
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: "white",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+          error: {
+            style: {
+              background: "red",
+              marginTop: "48px",
+              padding: "12px",
+            },
+          },
+        }}
+        position="top-right"
+        reverseOrder={false}
+      />
+      ;
       <div className="max-w-4xl mx-auto p-4 sm:p-6">
         <Card className="w-full">
           <CardHeader floated={false} className="h-80 m-0 relative">
