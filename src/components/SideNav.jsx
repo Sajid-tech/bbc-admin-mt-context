@@ -120,7 +120,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       to: "/contact",
       icon: <MdOutlineContactPage className="w-5 h-5 text-inherit" />,
       text: "Contact",
-      roles: ["admin", "superadmin"],
+      roles: ["superadmin"],
     },
     {
       to: "/share-user",
@@ -176,8 +176,8 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
-      <div className="m-4">
-        <ul className="mb-4 flex flex-col  gap-[6px]">
+      <div className="m-4 overflow-y-auto lg:min-h-screen md:h-[calc(100vh-200px)] h-[calc(100vh-200px)]  ">
+        <ul className="mb-4 flex flex-col  gap-1     ">
           {getFilteredMenuItems().map((item) => (
             <li key={item.to}>
               <NavLink to={item.to}>
