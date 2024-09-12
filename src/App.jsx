@@ -4,22 +4,41 @@ import SignIn from "./pages/auth/SignIn";
 import SIgnUp from "./pages/auth/SIgnUp";
 import Maintenance from "./pages/maintenance/Maintenance";
 import ProtectedRoute from "./components/ProtectedRoute";
-import ForgetPassword from "./pages/auth/ForgetPassword";
-import ChangePassword from "./pages/profile/ChangePassword";
-import UserProfile from "./pages/dashboard/UserProfile";
-import About from "./pages/website/About";
-import Enquiry from "./pages/website/Enquiry";
-import NewUser from "./pages/users/NewUser";
-import ActiveUser from "./pages/users/ActiveUser";
-import InactiveUser from "./pages/users/InactiveUser";
-import MobileUser from "./pages/users/MobileUser";
-import ShareUser from "./pages/users/ShareUser";
-import Download from "./pages/users/Download";
-import Portfolio from "./pages/website/Portfolio";
-import ShareUserById from "./pages/users/ShareUserById";
-import NewUserView from "./pages/users/NewUserView";
-import Feedback from "./pages/users/Feedback";
-import Contact from "./pages/users/Contact";
+// import ForgetPassword from "./pages/auth/ForgetPassword";
+// import ChangePassword from "./pages/profile/ChangePassword";
+// import UserProfile from "./pages/dashboard/UserProfile";
+// import About from "./pages/website/About";
+// import Enquiry from "./pages/website/Enquiry";
+// import NewUser from "./pages/users/NewUser";
+// import ActiveUser from "./pages/users/ActiveUser";
+// import InactiveUser from "./pages/users/InactiveUser";
+// import MobileUser from "./pages/users/MobileUser";
+// import ShareUser from "./pages/users/ShareUser";
+// import Download from "./pages/users/Download";
+// import Portfolio from "./pages/website/Portfolio";
+// import ShareUserById from "./pages/users/ShareUserById";
+// import NewUserView from "./pages/users/NewUserView";
+// import Feedback from "./pages/users/Feedback";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
+// import Contact from "./pages/users/Contact";
+const NewUserView = lazy(() => import("./pages/users/NewUserView"));
+const ShareUserById = lazy(() => import("./pages/users/ShareUserById"));
+const Portfolio = lazy(() => import("./pages/website/Portfolio"));
+const Download = lazy(() => import("./pages/users/Download"));
+const ShareUser = lazy(() => import("./pages/users/ShareUser"));
+const MobileUser = lazy(() => import("./pages/users/MobileUser"));
+const InactiveUser = lazy(() => import("./pages/users/InactiveUser"));
+const ActiveUser = lazy(() => import("./pages/users/ActiveUser"));
+const NewUser = lazy(() => import("./pages/users/NewUser"));
+const Enquiry = lazy(() => import("./pages/website/Enquiry"));
+const About = lazy(() => import("./pages/website/About"));
+const UserProfile = lazy(() => import("./pages/dashboard/UserProfile"));
+const ChangePassword = lazy(() => import("./pages/profile/ChangePassword"));
+const ForgetPassword = lazy(() => import("./pages/auth/ForgetPassword"));
+
+const Feedback = lazy(() => import("./pages/users/Feedback"));
+const Contact = lazy(() => import("./pages/users/Contact"));
 
 const App = () => {
   return (
@@ -33,60 +52,183 @@ const App = () => {
 
         <Route
           path="/user-profile"
-          element={<ProtectedRoute element={<UserProfile />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <UserProfile />
+                </Suspense>
+              }
+            />
+          }
         />
-        <Route path="/about" element={<ProtectedRoute element={<About />} />} />
+        <Route
+          path="/about"
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <About />
+                </Suspense>
+              }
+            />
+          }
+        />
         <Route
           path="/portfolio"
-          element={<ProtectedRoute element={<Portfolio />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Portfolio />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/enquiry"
-          element={<ProtectedRoute element={<Enquiry />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Enquiry />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/new-user"
-          element={<ProtectedRoute element={<NewUser />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <NewUser />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/user-view"
-          element={<ProtectedRoute element={<NewUserView />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <NewUserView />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/active-user"
-          element={<ProtectedRoute element={<ActiveUser />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <ActiveUser />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/inactive-user"
-          element={<ProtectedRoute element={<InactiveUser />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <InactiveUser />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/mobile-user"
-          element={<ProtectedRoute element={<MobileUser />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <MobileUser />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/feedback"
-          element={<ProtectedRoute element={<Feedback />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Feedback />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/contact"
-          element={<ProtectedRoute element={<Contact />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Contact />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/share-user"
-          element={<ProtectedRoute element={<ShareUser />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <ShareUser />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/share-view"
-          element={<ProtectedRoute element={<ShareUserById />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <ShareUserById />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/download"
-          element={<ProtectedRoute element={<Download />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Download />
+                </Suspense>
+              }
+            />
+          }
         />
         <Route
           path="/change-password"
-          element={<ProtectedRoute element={<ChangePassword />} />}
+          element={
+            <ProtectedRoute
+              element={
+                <Suspense fallback={<Loader />}>
+                  <ChangePassword />
+                </Suspense>
+              }
+            />
+          }
         />
 
         {/* <Route
