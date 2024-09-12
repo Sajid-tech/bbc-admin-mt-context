@@ -9,7 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // import UserProfile from "./pages/dashboard/UserProfile";
 // import About from "./pages/website/About";
 // import Enquiry from "./pages/website/Enquiry";
-// import NewUser from "./pages/users/NewUser";
+import NewUser from "./pages/users/NewUser";
 // import ActiveUser from "./pages/users/ActiveUser";
 // import InactiveUser from "./pages/users/InactiveUser";
 // import MobileUser from "./pages/users/MobileUser";
@@ -17,12 +17,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 // import Download from "./pages/users/Download";
 // import Portfolio from "./pages/website/Portfolio";
 // import ShareUserById from "./pages/users/ShareUserById";
-// import NewUserView from "./pages/users/NewUserView";
+import NewUserView from "./pages/users/NewUserView";
 // import Feedback from "./pages/users/Feedback";
 import { lazy, Suspense } from "react";
 import Loader from "./components/Loader";
 // import Contact from "./pages/users/Contact";
-const NewUserView = lazy(() => import("./pages/users/NewUserView"));
+// const NewUserView = lazy(() => import("./pages/users/NewUserView"));
 const ShareUserById = lazy(() => import("./pages/users/ShareUserById"));
 const Portfolio = lazy(() => import("./pages/website/Portfolio"));
 const Download = lazy(() => import("./pages/users/Download"));
@@ -30,7 +30,7 @@ const ShareUser = lazy(() => import("./pages/users/ShareUser"));
 const MobileUser = lazy(() => import("./pages/users/MobileUser"));
 const InactiveUser = lazy(() => import("./pages/users/InactiveUser"));
 const ActiveUser = lazy(() => import("./pages/users/ActiveUser"));
-const NewUser = lazy(() => import("./pages/users/NewUser"));
+// const NewUser = lazy(() => import("./pages/users/NewUser"));
 const Enquiry = lazy(() => import("./pages/website/Enquiry"));
 const About = lazy(() => import("./pages/website/About"));
 const UserProfile = lazy(() => import("./pages/dashboard/UserProfile"));
@@ -100,27 +100,11 @@ const App = () => {
         />
         <Route
           path="/new-user"
-          element={
-            <ProtectedRoute
-              element={
-                <Suspense fallback={<Loader />}>
-                  <NewUser />
-                </Suspense>
-              }
-            />
-          }
+          element={<ProtectedRoute element={<NewUser />} />}
         />
         <Route
           path="/user-view"
-          element={
-            <ProtectedRoute
-              element={
-                <Suspense fallback={<Loader />}>
-                  <NewUserView />
-                </Suspense>
-              }
-            />
-          }
+          element={<ProtectedRoute element={<NewUserView />} />}
         />
         <Route
           path="/active-user"
