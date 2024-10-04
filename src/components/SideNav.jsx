@@ -12,9 +12,10 @@ import {
   UserMinusIcon,
   UserPlusIcon,
   XMarkIcon,
+  ChevronDownIcon,
 } from "@heroicons/react/24/outline";
 import { Button, IconButton, Typography } from "@material-tailwind/react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdOutlineContactPage, MdOutlineFeedback } from "react-icons/md";
 
 const SideNav = ({ openSideNav, setOpenSideNav }) => {
@@ -23,6 +24,11 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
 
   const adminType = localStorage.getItem("admin-type");
   const detailsView = localStorage.getItem("details-view");
+  const [openUsersMenu, setOpenUsersMenu] = useState(false); // State to handle dropdown toggle
+
+  const handleUsersButtonClick = () => {
+    setOpenUsersMenu(!openUsersMenu); // Toggle dropdown on click
+  };
 
   // Hardcoded sidenavType to "dark"
   const sidenavType = "dark";
@@ -55,6 +61,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
 
   // defne the menu item as per role
 
+  // const menu items upper
   const menuItems = [
     {
       to: "/home",
@@ -86,6 +93,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       text: "Enquiry",
       roles: ["admin", "superadmin", "userType1"],
     },
+  ];
+
+  // middle
+  const menuItems1 = [
     {
       to: "/new-user",
       icon: <UserPlusIcon className="w-5 h-5 text-inherit" />,
@@ -110,6 +121,10 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       text: "Mobile User",
       roles: ["admin", "superadmin"],
     },
+  ];
+
+  // last
+  const menuItems2 = [
     {
       to: "/feedback",
       icon: <MdOutlineFeedback className="w-5 h-5 text-inherit" />,
@@ -136,7 +151,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
     },
   ];
 
-  // role-type
+  // role-type 0
 
   const getFilteredMenuItems = () => {
     if (adminType == "superadmin") {
@@ -149,6 +164,36 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
       return detailsView === "0"
         ? menuItems.filter((item) => item.roles.includes("user"))
         : menuItems.filter((item) => item.roles.includes("userType1"));
+    }
+  };
+  // role-type 1
+
+  const getFilteredMenuItems1 = () => {
+    if (adminType == "superadmin") {
+      return menuItems1;
+    }
+    if (adminType === "admin") {
+      return menuItems1.filter((item) => item.roles.includes("admin"));
+    }
+    if (adminType === "user") {
+      return detailsView === "0"
+        ? menuItems1.filter((item) => item.roles.includes("user"))
+        : menuItems1.filter((item) => item.roles.includes("userType1"));
+    }
+  };
+  // role-type 2
+
+  const getFilteredMenuItems2 = () => {
+    if (adminType == "superadmin") {
+      return menuItems2;
+    }
+    if (adminType === "admin") {
+      return menuItems2.filter((item) => item.roles.includes("admin"));
+    }
+    if (adminType === "user") {
+      return detailsView === "0"
+        ? menuItems2.filter((item) => item.roles.includes("user"))
+        : menuItems2.filter((item) => item.roles.includes("userType1"));
     }
   };
 
@@ -176,7 +221,7 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           <XMarkIcon strokeWidth={2.5} className="h-5 w-5 text-white" />
         </IconButton>
       </div>
-      <div className="m-4 overflow-y-auto lg:min-h-screen md:h-[calc(100vh-200px)] h-[calc(100vh-200px)]  ">
+      <div className="m-4 overflow-y-auto  lg:h-[calc(100vh-150px)]  md:h-[calc(100vh-200px)] h-[calc(100vh-200px)] custom-scroll ">
         <ul className="mb-4 flex flex-col  gap-1     ">
           {getFilteredMenuItems().map((item) => (
             <li key={item.to}>
@@ -202,6 +247,85 @@ const SideNav = ({ openSideNav, setOpenSideNav }) => {
           ))}
 
           {/* Add more hardcoded routes here as needed */}
+          {/* Users Dropdown */}
+          <li>
+            <div>
+              <Button
+                variant="text"
+                color="white"
+                className="flex items-center justify-between px-4 capitalize"
+                fullWidth
+                onClick={handleUsersButtonClick}
+              >
+                <div className="flex items-center gap-4">
+                  <UserPlusIcon className="w-5 h-5 text-inherit" />
+                  <Typography
+                    color="inherit"
+                    className="font-medium capitalize"
+                  >
+                    Users
+                  </Typography>
+                </div>
+                <ChevronDownIcon
+                  className={`w-5 h-5 transition-transform ${
+                    openUsersMenu ? "rotate-180" : ""
+                  }`}
+                />
+              </Button>
+              {/* menu item 1 */}
+              {openUsersMenu && (
+                <ul className="ml-8">
+                  {/* menu item 1User */}
+                  {getFilteredMenuItems1().map((item) => (
+                    <li key={item.to}>
+                      <NavLink to={item.to}>
+                        {({ isActive }) => (
+                          <Button
+                            variant={isActive ? "gradient" : "text"}
+                            color="white"
+                            className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
+                            fullWidth
+                          >
+                            {item.icon}
+                            <Typography
+                              color="inherit"
+                              className="font-medium capitalize"
+                            >
+                              {item.text}
+                            </Typography>
+                          </Button>
+                        )}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </li>
+
+          {/* menuitem 2  */}
+          {getFilteredMenuItems2().map((item) => (
+            <li key={item.to}>
+              <NavLink to={item.to}>
+                {({ isActive }) => (
+                  <Button
+                    variant={isActive ? "gradient" : "text"}
+                    color="white"
+                    className="flex items-center gap-4 px-4 py-2 text-sm md:text-base capitalize"
+                    fullWidth
+                  >
+                    {item.icon}
+                    <Typography
+                      color="inherit"
+                      className="font-medium capitalize"
+                    >
+                      {item.text}
+                    </Typography>
+                  </Button>
+                )}
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </div>
     </aside>
